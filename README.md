@@ -74,6 +74,8 @@ Further, you will need a [GCP Service Account](https://cloud.google.com/iam/docs
 
 After you create service account, save it into your instance in a safe place
 
+Complete the following steps from your server:
+
 Create credentials file
 ```
 mkdir -p ~/.gcp/credentials && touch ~/.gcp/credentials/google-key.json 
@@ -98,7 +100,7 @@ Copy the credentials content
     "auth_provider_x509_cert_url": "GCP_AUTH_PROVIDER_CERT_URL",
     "client_x509_cert_url": "GCP_CLIENT_CERT_URL"
   }
-  
+
 ```
 
 # Automated Server Configuration
