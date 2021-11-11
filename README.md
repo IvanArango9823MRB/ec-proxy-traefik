@@ -61,7 +61,7 @@ This guide will use the following sub-domains, where `example.com` will need to 
 | subdomain              | description                           |
 | ---------------------- | ------------------------------------- |
 | api.example.com        | The Reaction  GraphQL API             |
-| storefront.example.com | The example storefront                |
+| shop.example.com | The example storefront                |
 | admin.example.com      | The Reaction admin interface          |
 | hydra.example.com      | Hydra OAuth 2.0 server                |
 | identity.example.com   | The Reaction Identity service         |
@@ -72,6 +72,34 @@ Each of your domains will need an `A` DNS record that resolves to your host's IP
 
 Further, you will need a [GCP Service Account](https://cloud.google.com/iam/docs/creating-managing-service-accounts) to generate CAA records for your sub-domains.
 
+After you create service account, save it into your instance in a safe place
+
+Create credentials file
+```
+mkdir -p ~/.gcp/credentials && touch ~/.gcp/credentials/google-key.json 
+```
+
+Edit your credentials file
+```
+nano ~/.gcp/credentials/google-key.json
+```
+
+Copy the credentials content
+```
+{
+    "type": "GCP_SERVICE_ACCOUNT_TYPE",
+    "project_id": "GCP_PROJECT_ID",
+    "private_key_id": "GCP_PRIVATE_KEY_ID",
+    "private_key": "GCP_PRIVATE_KEY",
+    "client_email": "CGP_CLIENT_EMAIL",
+    "client_id": "GCP_CLIENT_ID",
+    "auth_uri": "GCP_AUTH_URI",
+    "token_uri": "GCP_TOKEN_URI",
+    "auth_provider_x509_cert_url": "GCP_AUTH_PROVIDER_CERT_URL",
+    "client_x509_cert_url": "GCP_CLIENT_CERT_URL"
+  }
+  
+```
 
 # Automated Server Configuration
 
@@ -174,12 +202,12 @@ NOTE: the `-l reaction.server` limits the execution of the playbook to the `reac
 
 At this point the Reaction GraphQL API, Example Storefront, Reaction Admin, Reaction Identity and Hydra should be accessible over the internet.
 
-To create the primary shop login into the Reaction Admin at the following URL, first substitute the `example.com` with your actual domain:
+To create the primary shop. login into the Reaction Admin at the following URL, first substitute the `example.com` with your actual domain:
 ```
 https://admin.example.com
 ```
 
-Upon navigating to the Reaction Admin interface, you will be presented with a login form, it will be necessary to create a user first, so click on the "Register" link and fill out the form. Once logged in, proceed to create a shop in the admin interface.
+Upon navigating to the Reaction Admin interface, you will be presented with a login form, it will be necessary to create a user first, so click on the "Register" link and fill out the form. Once logged in, proceed to create a shop. in the admin interface.
 
 Further, the `GraphQL API` explorer will be available at `https://api.example.com/graphql`.
 

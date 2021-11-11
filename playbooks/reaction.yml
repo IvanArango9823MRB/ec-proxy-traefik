@@ -22,8 +22,9 @@
     reaction_platform_path: "/home/{{create_user}}/{{reaction_dir}}"
     traefik_admin_user: reaction
     traefik_path: "/home/{{ create_user }}/{{ proxy_dir }}/traefik"
-    startup_repo: "git@github.com:twowheelstogo/ec-startup-pollobrujo.git"
-    project_id: "cb"
+    google_credentials_path: "~/.gcp/credentials/google-key.json"
+    startup_repo: "https://github.com/twowheelstogo/ec-startup-pollobrujo.git"
+    project_id: "pb"
 
   tasks:
     - name: Make sure we have a 'wheel' group
@@ -163,7 +164,7 @@
         version: trunk
 
     - git:
-        repo: "git@github.com:twowheelstogo/ec-proxy-traefik.git"
+        repo: "https://github.com/twowheelstogo/ec-proxy-traefik.git"
         dest: /home/{{ create_user }}/{{proxy_dir}}
         version: main
 
@@ -244,6 +245,14 @@
       file:
         path: "{{ traefik_path}}/acme.json"
         mode: "600"
+    - name: "Copy google credentials"
+      copy:
+        src: "{{ google_credentials_path }}"
+        dest: "{{ proxy_path }}/traefik"
+        remote_src: yes
+        owner: "{{ create_user }}"
+        group: "{{ create_user }}"
+        mode: "0644" 
 
     - name: "Start Traefik"
       command: "docker-compose up -d"
@@ -296,35 +305,11 @@
       loop:
         - {
             variable: "CANONICAL_URL",
-            value: "https://storefront.{{ domain }}",
+            value: "https://shop.{{ domain }}",
           }
         - {
             variable: "EXTERNAL_GRAPHQL_URL",
             value: "https://api.{{ domain }}/graphql",
-          }
-        - {
-            variable: "OAUTH2_AUTH_URL",
-            value: "https://hydra.{{ domain }}/oauth2/auth",
-          }
-        - {
-            variable: "OAUTH2_IDP_HOST_URL",
-            value: "https://identity.{{ domain }}",
-          }
-        - {
-            variable: "OAUTH2_REDIRECT_URL",
-            value: "https://storefront.{{ domain }}/callback",
-          }
-        - {
-            variable: "OAUTH2_TOKEN_URL",
-            value: "https://hydra.{{ domain }}/oauth2/token",
-          }
-        - {
-            variable: "OAUTH2_PUBLIC_LOGOUT_URL",
-            value: "https://hydra.{{ domain }}/oauth2/sessions/logout",
-          }
-        - {
-            variable: "OAUTH2_IDP_PUBLIC_CHANGE_PASSWORD_URL",
-            value: "https://identity.{{ domain }}/account/change-password?email=EMAIL&from=FROM",
           }
 
 
@@ -340,7 +325,7 @@
           }
         - {
             variable: "PUBLIC_STOREFRONT_HOME_URL",
-            value: "https://storefront.{{ domain }}",
+            value: "https://shop.{{ domain }}",
           }
         - {
             variable: "PUBLIC_I18N_BASE_URL",
@@ -357,14 +342,6 @@
         - {
             variable: "PUBLIC_GRAPHQL_API_URL_HTTP",
             value: "https://api.{{ domain }}/graphql"
-          }
-        - {
-            variable: "OAUTH2_PUBLIC_URL",
-            value: "https://hydra.{{ domain }}"
-          }
-        - {
-            variable: "OAUTH2_IDP_PUBLIC_CHANGE_PASSWORD_URL",
-            value: "https://identity.{{ domain }}/account/change-password?email=EMAIL&from=FROM"
           }
 
     - name: "Remove all Reaction Platform containers"
