@@ -10,7 +10,7 @@
   vars:
     do_auth_token: "YOUR_DIGITALOCEAN_AUTH_TOKEN"
     domain: "qbit01.com"
-    email: "luiscelano@twowheelstogo.com"
+    email: "iva.arango@twowheelstogo.com"
 
     create_user: reaction
     copy_local_key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
